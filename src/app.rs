@@ -37,8 +37,8 @@ use std::sync::atomic::{self};
 use std::time::Duration;
 
 pub const QUALIFIER: &str = "io.github";
-pub const ORG: &str = "cosmic_utils";
-pub const APP: &str = "cosmic-ext-applet-clipboard-manager";
+pub const ORG: &str = "meowsystem";
+pub const APP: &str = "Clipboard";
 pub const APPID: &str = constcat::concat!(QUALIFIER, ".", ORG, ".", APP);
 
 pub struct AppState<Db: DbTrait> {

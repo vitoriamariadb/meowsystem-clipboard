@@ -3,7 +3,7 @@
 <!-- https://docs.flathub.org/docs/for-app-authors/metainfo-guidelines -->
 
 <component type="desktop-application">
-    <id>io.github.cosmic_utils.cosmic-ext-applet-clipboard-manager</id>
+    <id>io.github.meowsystem.Clipboard</id>
 
     <name>Clipboard Manager</name>
     <name xml:lang="cs">Manažer schránky</name>
@@ -30,7 +30,7 @@
     </developer>
 
 
-    <icon type="stock">io.github.cosmic_utils.cosmic-ext-applet-clipboard-manager-symbolic</icon>
+    <icon type="stock">io.github.meowsystem.Clipboard-symbolic</icon>
 
     <url type="homepage">
         https://github.com/cosmic-utils/clipboard-manager</url>
@@ -63,7 +63,7 @@
 
 
     <launchable type="desktop-id">
-        io.github.cosmic_utils.cosmic-ext-applet-clipboard-manager.desktop</launchable>
+        io.github.meowsystem.Clipboard.desktop</launchable>
     <screenshots>
         <screenshot type="default">
             <image>
@@ -81,7 +81,7 @@
     <provides>
         <id>com.system76.CosmicApplet</id>
         <binaries>
-            <binary>cosmic-ext-applet-clipboard-manager</binary>
+            <binary>meowsystem-clipboard</binary>
         </binaries>
     </provides>
 

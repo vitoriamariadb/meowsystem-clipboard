@@ -40,14 +40,14 @@ jobs:
               --default-branch=testing \
               --user \
               flatpak-out \
-              io.github.cosmic_utils.cosmic-ext-applet-clipboard-manager.json
+              io.github.meowsystem.Clipboard.json
 
       - name: Create Flatpak bundle
         run: |
           flatpak build-bundle \
             repo \
             clipboard-manager.flatpak \
-            io.github.cosmic_utils.cosmic-ext-applet-clipboard-manager \
+            io.github.meowsystem.Clipboard \
             testing
 
       - name: Upload Flatpak bundle artifact

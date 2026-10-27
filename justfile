@@ -2,8 +2,8 @@ export CLIPBOARD_MANAGER_COMMIT := `git rev-parse --short HEAD`
 rootdir := ''
 prefix := '/usr'
 debug := '0'
-name := 'cosmic-ext-applet-clipboard-manager'
-appid := 'io.github.cosmic_utils.' + name
+name := 'meowsystem-clipboard'
+appid := 'io.github.meowsystem.Clipboard'
 cargo-target-dir := env('CARGO_TARGET_DIR', 'target')
 bin-src := cargo-target-dir / if debug == '1' { 'debug' / name } else { 'release' / name }
 base-dir := absolute_path(clean(rootdir / prefix))
@@ -27,16 +27,16 @@ build-release *args:
 
 install:
     install -Dm0755 {{ bin-src }} {{ bin-dst }}
-    install -Dm0644 res/desktop_entry.desktop {{ desktop-dst }}
-    install -Dm0644 res/metainfo.xml {{ metainfo-dst }}
-    install -Dm0644 res/app_icon.svg {{ icon-dst }}
+    install -Dm0644 res/{{ appid }}.desktop {{ desktop-dst }}
+    install -Dm0644 res/{{ appid }}.metainfo.xml {{ metainfo-dst }}
+    install -Dm0644 res/{{ appid }}-symbolic.svg {{ icon-dst }}
 
 install-schema:
     install -Dm0644 res/config_schema.json {{ schema-dst }}
 
 uninstall:
     rm -f {{ bin-dst }}
-    rm -f {{ desktop-dst }} 
+    rm -f {{ desktop-dst }}
     rm -f {{ icon-dst }}
     rm -f {{ schema-dst }}
     rm -f {{ metainfo-dst }}
@@ -66,12 +66,12 @@ prettier:
     npx prettier -w .
 
 metainfo-check:
-    appstreamcli validate --pedantic --explain --strict res/metainfo.xml
+    appstreamcli validate --pedantic --explain --strict res/{{ appid }}.metainfo.xml
 
 ################### Flatpak
 
 runf:
-    RUST_LOG="warn,cosmic_ext_applet_clipboard_manager=debug" flatpak run {{ appid }}
+    RUST_LOG="warn,meowsystem_clipboard=debug" flatpak run {{ appid }}
 
 uninstallf:
     flatpak uninstall {{ appid }} -y || true

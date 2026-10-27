@@ -15,7 +15,7 @@ You also build from source. For this you need to install [rust](https://rust-lan
 ## Logs
 
 ```sh
-journalctl -p 3 -xb --user _EXE=/usr/bin/cosmic-ext-applet-clipboard-manager | less
+journalctl -p 3 -xb --user _EXE=/usr/bin/meowsystem-clipboard | less
 ```
 
 - `-p` 3 means priority error
@@ -28,13 +28,13 @@ journalctl -p 3 -xb --user _EXE=/usr/bin/cosmic-ext-applet-clipboard-manager | l
 # install
 flatpak install --user clipboard-manager.flatpak
 # run specific branch
-flatpak run --branch=testing io.github.cosmic_utils.cosmic-ext-applet-clipboard-manager
+flatpak run --branch=testing io.github.meowsystem.Clipboard
 # to be sure cosmic-panel will launch the wanted version
-flatpak uninstall --user io.github.cosmic_utils.cosmic-ext-applet-clipboard-manager//master
+flatpak uninstall --user io.github.meowsystem.Clipboard//master
 # or verify the commit with
-flatpak run io.github.cosmic_utils.cosmic-ext-applet-clipboard-manager -V
+flatpak run io.github.meowsystem.Clipboard -V
 # uninstall testing repo and app
-flatpak remote-delete --user cosmic-ext-applet-clipboard-manager-origin
+flatpak remote-delete --user meowsystem-clipboard-origin
 ```
 
 ## Build from source

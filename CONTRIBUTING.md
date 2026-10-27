@@ -31,8 +31,8 @@ Failure to follow these guidelines may result in your pull request being closed 
 
 # Translation
 
-- the [desktop entry](./res/desktop_entry.desktop)
-- the [metainfo file](./res/metainfo.xml)
+- the [desktop entry](./res/io.github.meowsystem.Clipboard.desktop)
+- the [metainfo file](./res/io.github.meowsystem.Clipboard.metainfo.xml)
 - the [strings](./i18n/) used in the app
 
 <strong> Please don't translate the README, or other markdown files, this will not be merged. </strong>

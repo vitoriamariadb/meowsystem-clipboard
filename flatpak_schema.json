@@ -1,12 +1,12 @@
 {
-  "id": "io.github.cosmic_utils.cosmic-ext-applet-clipboard-manager",
+  "id": "io.github.meowsystem.Clipboard",
   "runtime": "org.freedesktop.Platform",
   "runtime-version": "25.08",
   "base": "com.system76.Cosmic.BaseApp",
   "base-version": "stable",
   "sdk": "org.freedesktop.Sdk",
   "sdk-extensions": ["org.freedesktop.Sdk.Extension.rust-stable"],
-  "command": "cosmic-ext-applet-clipboard-manager",
+  "command": "meowsystem-clipboard",
   "finish-args": [
     "--share=ipc",
     "--socket=wayland",
@@ -18,12 +18,12 @@
   "build-options": {
     "append-path": "/usr/lib/sdk/rust-stable/bin",
     "env": {
-      "CARGO_HOME": "/run/build/cosmic-ext-applet-clipboard-manager/cargo"
+      "CARGO_HOME": "/run/build/meowsystem-clipboard/cargo"
     }
   },
   "modules": [
     {
-      "name": "cosmic-ext-applet-clipboard-manager",
+      "name": "meowsystem-clipboard",
       "buildsystem": "simple",
       "build-commands": [
         "just build-release --verbose --offline",

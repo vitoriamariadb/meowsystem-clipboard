@@ -7,6 +7,7 @@
 
     <name>Clipboard Manager</name>
     <name xml:lang="cs">Manažer schránky</name>
+    <name xml:lang="pt-BR">Área de Transferência</name>
     <name xml:lang="de">Zwischenablage Verwaltung</name>
     <name xml:lang="hu">Vágólapkezelő</name>
     <name xml:lang="ru">Менеджер буфера обмена</name>
@@ -14,6 +15,7 @@
     <name xml:lang="fr">Presse-papier</name>
     <summary>A wayland clipboard manager</summary>
     <summary xml:lang="cs">Manažer schránky pro Wayland</summary>
+    <summary xml:lang="pt-BR">Gerenciador de itens copiados para Wayland</summary>
     <summary xml:lang="de">Eine Zwischenablage Verwaltung für Wayland</summary>
     <summary xml:lang="hu">Wayland vágólapkezelő</summary>
     <summary xml:lang="ru">Менеджер буфера обмена для Wayland</summary>
@@ -25,7 +27,7 @@
 
     <project_group>COSMIC</project_group>
 
-    <developer id="tld.vendor">
+    <developer id="io.github.wiiznokes">
         <name>wiiznokes</name>
     </developer>
 
@@ -33,13 +35,13 @@
     <icon type="stock">io.github.meowsystem.Clipboard-symbolic</icon>
 
     <url type="homepage">
-        https://github.com/cosmic-utils/clipboard-manager</url>
+        https://github.com/vitoriamariadb/meowsystem-clipboard</url>
     <url type="bugtracker">
-        https://github.com/cosmic-utils/clipboard-manager/issues</url>
+        https://github.com/vitoriamariadb/meowsystem-clipboard/issues</url>
     <url type="contribute">
-        https://github.com/cosmic-utils/clipboard-manager</url>
+        https://github.com/vitoriamariadb/meowsystem-clipboard</url>
     <url type="translate">
-        https://github.com/cosmic-utils/clipboard-manager/tree/master/i18n</url>
+        https://github.com/vitoriamariadb/meowsystem-clipboard/tree/main/i18n</url>
 
     <content_rating type="oars-1.1" />
 
@@ -47,17 +49,20 @@
     <description>
         <p>Clipboard Manager cosmic applet with support for images and other mime types. Only work
             on Wayland using the data control protocol.</p>
+        <p>Fork of wiiznokes' Clipboard Manager, themed by MeowSystem: the popup takes the colours
+            the theme pack puts in an optional extension file, and the history is trimmed to the
+            last 1000 entries and 1 GB of images, favourites kept.</p>
         <p xml:lang="cs">COSMIC applet manažera schránky s podporou pro obrázky a další mime typy.
             Funguje na Waylandu za pomoci data control protokolu.</p>
         <p xml:lang="de">COSMIC applet mit support für bilder und andere mime typen.
             Funktioniert nur in Wayland mit dem Datenkontrollprotokoll (data control protocol).</p>    <!--the contents in the parenthesis are for better understanding while troubleshooting-->
-        <p xml:lang="hu">Vágólapkezelő COSMIC kisalkalmazás, amely támogatja a képeket és más MIME-típusokat. 
+        <p xml:lang="hu">Vágólapkezelő COSMIC kisalkalmazás, amely támogatja a képeket és más MIME-típusokat.
            Csak Waylanden működik az adatvezérlő protokoll használatával.</p>
-        <p xml:lang="ru">Апплет буфера обмена COSMIC с поддержкой изображений и других типов MIME. 
+        <p xml:lang="ru">Апплет буфера обмена COSMIC с поддержкой изображений и других типов MIME.
            Работает только в Wayland с использованием протокола управления данными.</p>
-        <p xml:lang="uk">Віджет буфера обміну COSMIC із підтримкою зображень та інших типів MIME. 
+        <p xml:lang="uk">Віджет буфера обміну COSMIC із підтримкою зображень та інших типів MIME.
            працює лише в середовищі Wayland і використовує протокол керування даними.</p>
-       <p xml:lang="fr">Un applet de gestion du presse-papier pour le bureau COSMIC avec support des images et autres types de médias. 
+       <p xml:lang="fr">Un applet de gestion du presse-papier pour le bureau COSMIC avec support des images et autres types de médias.
        Uniquement compatible avec Wayland via le protocole de contrôle des données. (data control protocol)</p> <!--I decided to follow the lead of the DE translator : including limited English in parenthesis for ease of troubleshooting -->
     </description>
 

@@ -18,6 +18,7 @@ mod localize;
 mod message;
 mod my_widget;
 mod navigation;
+mod tema;
 mod utils;
 mod view;
 

@@ -995,37 +995,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "meowsystem-clipboard"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "chrono",
- "constcat",
- "directories",
- "fslock",
- "futures",
- "i18n-embed",
- "i18n-embed-fl",
- "include_dir",
- "itertools",
- "libcosmic",
- "mime 0.3.17",
- "nucleo",
- "open",
- "paste",
- "regex",
- "rust-embed",
- "serde",
- "serial_test",
- "sqlx",
- "thiserror 2.0.19",
- "tokio",
- "tracing",
- "tracing-journald",
- "tracing-subscriber",
-]
-
-[[package]]
 name = "cosmic-freedesktop-icons"
 version = "0.4.0"
 source = "git+https://github.com/pop-os/freedesktop-icons#ab4c57b8e416c6af9297cb04d101889896fd9a92"
@@ -3361,6 +3330,38 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "488016bfae457b036d996092f6cb448677611ce4449e970ceaf42695203f218a"
 dependencies = [
  "autocfg",
+]
+
+[[package]]
+name = "meowsystem-clipboard"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "chrono",
+ "constcat",
+ "directories",
+ "fslock",
+ "futures",
+ "i18n-embed",
+ "i18n-embed-fl",
+ "include_dir",
+ "itertools",
+ "libcosmic",
+ "mime 0.3.17",
+ "nucleo",
+ "open",
+ "paste",
+ "regex",
+ "rust-embed",
+ "serde",
+ "serde_json",
+ "serial_test",
+ "sqlx",
+ "thiserror 2.0.19",
+ "tokio",
+ "tracing",
+ "tracing-journald",
+ "tracing-subscriber",
 ]
 
 [[package]]

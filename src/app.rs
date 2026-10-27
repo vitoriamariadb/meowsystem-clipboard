@@ -28,6 +28,7 @@ use crate::config::{Config, PRIVATE_MODE};
 use crate::db::{DbMessage, DbTrait, EntryTrait, MimeDataMap};
 use crate::message::{AppMsg, ConfigMsg, ContextMenuMsg};
 use crate::navigation::EventMsg;
+use crate::tema::{Cor, Tema};
 use crate::utils::task_message;
 use crate::view::SCROLLABLE_ID;
 use crate::{clipboard, clipboard_watcher, config, navigation};
@@ -53,6 +54,7 @@ pub struct AppState<Db: DbTrait> {
     pub qr_code: Option<Result<qr_code::Data, ()>>,
     last_quit: Option<(i64, PopupKind)>,
     pub preferred_mime_types_regex: Vec<Regex>,
+    tema: Tema,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -93,6 +95,28 @@ enum PopupKind {
 }
 
 impl<Db: DbTrait> AppState<Db> {
+    fn aplicar_tema(&self, dark: bool, antes: bool) -> Task<AppMsg> {
+        match self.tema.cosmic(dark) {
+            Some(theme) => cosmic::command::set_theme(theme),
+            None if antes => cosmic::command::set_theme(self.core.system_theme().clone()),
+            None => Task::none(),
+        }
+    }
+
+    fn reler_tema(&mut self) -> Task<AppMsg> {
+        let novo = Tema::load(APPID);
+        if novo == self.tema {
+            return Task::none();
+        }
+        let antes = self.tema.cosmic(true).is_some();
+        self.tema = novo;
+        self.aplicar_tema(cosmic::theme::active().cosmic().is_dark, antes)
+    }
+
+    fn tinta(&self) -> Option<Cor> {
+        self.tema.cor("tinta")
+    }
+
     fn focus_next(&mut self) -> Task<AppMsg> {
         if self.db.len() > 0 {
             self.focused = (self.focused + 1) % self.db.len();
@@ -159,6 +183,15 @@ impl<Db: DbTrait> AppState<Db> {
 
     fn toggle_popup(&mut self, kind: PopupKind) -> Task<AppMsg> {
         self.qr_code.take();
+        let tema = if self.popup.is_none() {
+            self.reler_tema()
+        } else {
+            Task::none()
+        };
+        Task::batch([tema, self.alternar_popup(kind)])
+    }
+
+    fn alternar_popup(&mut self, kind: PopupKind) -> Task<AppMsg> {
         match &self.popup {
             Some(popup) => {
                 if popup.kind == kind {
@@ -289,6 +322,7 @@ impl<Db: DbTrait + 'static> cosmic::Application for AppState<Db> {
             qr_code: None,
             last_quit: None,
             page: 0,
+            tema: Tema::load(APPID),
             preferred_mime_types_regex: config
                 .preferred_mime_types
                 .iter()
@@ -307,9 +341,25 @@ impl<Db: DbTrait + 'static> cosmic::Application for AppState<Db> {
         // let command = task_message(AppMsg::TogglePopup);
 
         // #[cfg(not(debug_assertions))]
-        let command = Task::none();
+        let command = state.aplicar_tema(cosmic::theme::active().cosmic().is_dark, false);
 
         (state, command)
+    }
+
+    fn system_theme_update(
+        &mut self,
+        _keys: &[&'static str],
+        new_theme: &cosmic::cosmic_theme::Theme,
+    ) -> Task<Self::Message> {
+        self.aplicar_tema(new_theme.is_dark, false)
+    }
+
+    fn system_theme_mode_update(
+        &mut self,
+        _keys: &[&'static str],
+        mode: &cosmic::cosmic_theme::ThemeMode,
+    ) -> Task<Self::Message> {
+        self.aplicar_tema(mode.is_dark, false)
     }
 
     fn on_close_requested(&self, id: window::Id) -> Option<AppMsg> {
@@ -547,11 +597,12 @@ impl<Db: DbTrait + 'static> cosmic::Application for AppState<Db> {
     }
 
     fn view(&self) -> Element<'_, Self::Message> {
-        let icon = self
-            .core
-            .applet
-            .icon_button(constcat::concat!(APPID, "-symbolic"))
-            .on_press(AppMsg::TogglePopup);
+        let icon = crate::tema::botao(
+            &self.core.applet,
+            constcat::concat!(APPID, "-symbolic"),
+            self.tinta(),
+        )
+        .on_press(AppMsg::TogglePopup);
 
         MouseArea::new(icon)
             .on_right_release(AppMsg::ToggleQuickSettings)

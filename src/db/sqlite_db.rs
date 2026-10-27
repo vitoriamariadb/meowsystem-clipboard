@@ -7,6 +7,7 @@ use std::{
     fmt::Debug,
     hash::{DefaultHasher, Hash, Hasher},
     path::Path,
+    time::Instant,
 };
 
 use anyhow::{Result, anyhow};
@@ -21,6 +22,7 @@ use crate::{
     utils::{self},
 };
 
+use super::poda::{self, INTERVALO, LINHAS_MANTIDAS, ORCAMENTO_IMAGEM_BYTES};
 use super::{DbMessage, DbTrait, EntryId, EntryTrait, MimeDataMap, PRIV_MIME_TYPES_SIMPLE, now};
 
 type Time = i64;
@@ -45,6 +47,7 @@ pub struct DbSqlite {
     data_version: i64,
     pub(super) favorites: Favorites,
     lock: LockFile,
+    ultima_poda: Instant,
 }
 
 #[derive(Clone)]
@@ -258,7 +261,7 @@ impl DbTrait for DbSqlite {
                     let creation: Time = r.get("creation");
 
                     let query_delete_old_one = r#"
-                
+
                             DELETE FROM ClipboardEntries
                             WHERE creation <= ? AND id NOT IN (
                                 SELECT id
@@ -277,6 +280,12 @@ impl DbTrait for DbSqlite {
             }
         }
 
+        if lock.owns_lock()
+            && let Err(err) = poda::podar(&mut conn, LINHAS_MANTIDAS, ORCAMENTO_IMAGEM_BYTES).await
+        {
+            warn!("history trim failed: {err}");
+        }
+
         let mut db = DbSqlite {
             data_version: fetch_data_version(&mut conn).await?,
             conn,
@@ -289,6 +298,7 @@ impl DbTrait for DbSqlite {
             matcher: Matcher::new(nucleo::Config::DEFAULT).into(),
             favorites: Favorites::default(),
             lock,
+            ultima_poda: Instant::now(),
         };
 
         db.reload().await?;
@@ -682,6 +692,15 @@ impl DbTrait for DbSqlite {
     }
 
     async fn handle_message(&mut self, _message: DbMessage) -> Result<()> {
+        if self.lock.owns_lock() && self.ultima_poda.elapsed() >= INTERVALO {
+            self.ultima_poda = Instant::now();
+            match poda::podar(&mut self.conn, LINHAS_MANTIDAS, ORCAMENTO_IMAGEM_BYTES).await {
+                Ok(true) => self.reload().await?,
+                Ok(false) => {}
+                Err(err) => warn!("history trim failed: {err}"),
+            }
+        }
+
         let data_version = fetch_data_version(&mut self.conn).await?;
 
         if self.data_version != data_version {

@@ -52,12 +52,18 @@ impl Cor {
 
 /// As chaves de cor que o arquivo aceita, e o que cada uma pinta.
 pub const CORES: [(&str, &str); 7] = [
-    ("acento", "botões principais, escolhas marcadas e interruptores ligados"),
+    (
+        "acento",
+        "botões principais, escolhas marcadas e interruptores ligados",
+    ),
     ("destaque", "texto e ícones sobre o acento"),
     ("fundo", "fundo do popup"),
     ("borda", "contorno e divisórias do popup"),
     ("texto", "texto e ícones do popup"),
-    ("bloco", "fundo dos botões, dos campos e das linhas do popup"),
+    (
+        "bloco",
+        "fundo dos botões, dos campos e das linhas do popup",
+    ),
     ("tinta", "o ícone do applet na barra do painel"),
 ];
 
@@ -98,7 +104,10 @@ impl Tema {
                 tema.cores.insert(chave.to_owned(), cor);
                 continue;
             }
-            tracing::warn!("tema, linha {}: «{chave}» com «{valor}» não vale", numero + 1);
+            tracing::warn!(
+                "tema, linha {}: «{chave}» com «{valor}» não vale",
+                numero + 1
+            );
             tema.ignoradas += 1;
         }
         tema
@@ -162,7 +171,10 @@ impl Tema {
             theme.accent.on = cor.srgba();
             theme.accent_button.on = cor.srgba();
         }
-        let mut fundos = [theme.background(false).clone(), theme.background(true).clone()];
+        let mut fundos = [
+            theme.background(false).clone(),
+            theme.background(true).clone(),
+        ];
         for fundo in &mut fundos {
             self.pintar_fundo(fundo);
         }
@@ -259,7 +271,10 @@ pub fn caminho(app_id: &str) -> Option<PathBuf> {
 }
 
 fn sob(base: &std::path::Path, app_id: &str) -> PathBuf {
-    base.join("meowsystem").join("extensoes").join(app_id).join("tema.conf")
+    base.join("meowsystem")
+        .join("extensoes")
+        .join(app_id)
+        .join("tema.conf")
 }
 
 #[cfg(test)]
@@ -270,7 +285,9 @@ mod tests {
     fn cor_aceita_so_hex() {
         assert_eq!(Cor::parse("#cba6f7"), Some(Cor([0xcb, 0xa6, 0xf7, 255])));
         assert_eq!(Cor::parse("#1e1e2ecc"), Some(Cor([0x1e, 0x1e, 0x2e, 0xcc])));
-        for ruim in ["cba6f7", "#cba6f", "#gggggg", "mauve", "#cba6f7a", "", "#ção12"] {
+        for ruim in [
+            "cba6f7", "#cba6f", "#gggggg", "mauve", "#cba6f7a", "", "#ção12",
+        ] {
             assert_eq!(Cor::parse(ruim), None, "{ruim}");
         }
     }
@@ -323,11 +340,14 @@ mod tests {
     #[test]
     fn cores_cravadas_sao_exatas() {
         let mut theme = ThemeBuilder::dark().build();
-        let tema = Tema::parse("acento = #cba6f7\nfundo = #1e1e2e\ntexto = #cdd6f4\nbloco = #313244\n");
+        let tema =
+            Tema::parse("acento = #cba6f7\nfundo = #1e1e2e\ntexto = #cdd6f4\nbloco = #313244\n");
         tema.cravar(&mut theme);
         let hex = |c: Srgba| {
-            let c: cosmic::cosmic_theme::palette::rgb::Rgba<cosmic::cosmic_theme::palette::encoding::Srgb, u8> =
-                c.into_format();
+            let c: cosmic::cosmic_theme::palette::rgb::Rgba<
+                cosmic::cosmic_theme::palette::encoding::Srgb,
+                u8,
+            > = c.into_format();
             [c.red, c.green, c.blue]
         };
         assert_eq!(hex(theme.accent_color()), [0xcb, 0xa6, 0xf7]);
@@ -343,8 +363,13 @@ mod tests {
     #[test]
     fn caminho_usa_o_app_id() {
         assert_eq!(
-            sob(std::path::Path::new("/tmp/cfg-teste"), "io.github.meowsystem.Exemplo"),
-            PathBuf::from("/tmp/cfg-teste/meowsystem/extensoes/io.github.meowsystem.Exemplo/tema.conf")
+            sob(
+                std::path::Path::new("/tmp/cfg-teste"),
+                "io.github.meowsystem.Exemplo"
+            ),
+            PathBuf::from(
+                "/tmp/cfg-teste/meowsystem/extensoes/io.github.meowsystem.Exemplo/tema.conf"
+            )
         );
     }
 }

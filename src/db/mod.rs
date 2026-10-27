@@ -10,6 +10,7 @@ use crate::config::Config;
 #[cfg(test)]
 pub mod test;
 
+mod poda;
 mod sqlite_db;
 pub use sqlite_db::DbSqlite;
 

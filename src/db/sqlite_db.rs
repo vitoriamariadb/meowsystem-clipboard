@@ -30,6 +30,9 @@ type Time = i64;
 const DB_VERSION: &str = "7";
 const DB_FILENAME: &str = constcat::concat!(APPID, "-db-", DB_VERSION, ".sqlite");
 
+const DB_FILENAME_ANTIGO: &str =
+    "io.github.cosmic_utils.cosmic-ext-applet-clipboard-manager-db-7.sqlite";
+
 const LOCK_FILENAME: &str = constcat::concat!(APPID, "-db", ".lock");
 
 pub struct DbSqlite {
@@ -180,6 +183,14 @@ impl DbTrait for DbSqlite {
         let directories = directories::ProjectDirs::from(QUALIFIER, ORG, APP).unwrap();
 
         std::fs::create_dir_all(directories.cache_dir())?;
+
+        if let Some(home) = std::env::var_os("HOME") {
+            super::migra::historico_antigo(
+                Path::new(&home),
+                DB_FILENAME_ANTIGO,
+                &directories.cache_dir().join(DB_FILENAME),
+            );
+        }
 
         Self::with_path(config, directories.cache_dir()).await
     }

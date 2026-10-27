@@ -17,7 +17,7 @@ use nucleo::{
 };
 
 use crate::{
-    app::{APP, APPID, ORG, QUALIFIER},
+    app::{APPID, ORG, PASTA, QUALIFIER},
     config::Config,
     utils::{self},
 };
@@ -180,7 +180,7 @@ impl DbTrait for DbSqlite {
     type Entry = Entry;
 
     async fn new(config: &Config) -> Result<Self> {
-        let directories = directories::ProjectDirs::from(QUALIFIER, ORG, APP).unwrap();
+        let directories = directories::ProjectDirs::from(QUALIFIER, ORG, PASTA).unwrap();
 
         std::fs::create_dir_all(directories.cache_dir())?;
 

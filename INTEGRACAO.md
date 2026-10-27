@@ -41,7 +41,7 @@ Um applet já posto no painel só troca de binário quando o `cosmic-panel` rein
 
 Desfazer: `just uninstall-user`. A configuração fica em `~/.config/cosmic/io.github.meowsystem.Clipboard/v3/`.
 
-A configuração do flatpak antigo (`~/.var/app/io.github.cosmic_utils.cosmic-ext-applet-clipboard-manager/`) não é migrada: eram só as escolhas do popup, e o padrão vale. O **histórico** é: na primeira subida, se `~/.cache/clipboard/io.github.meowsystem.Clipboard-db-7.sqlite` ainda não existe, o applet copia o banco antigo (e o `-wal`/`-shm`, se houver) do flatpak ou de `~/.cache/cosmic-ext-applet-clipboard-manager/`. O original fica onde está; nunca se pisa em banco que já existe.
+A configuração do flatpak antigo (`~/.var/app/io.github.cosmic_utils.cosmic-ext-applet-clipboard-manager/`) não é migrada: eram só as escolhas do popup, e o padrão vale. O **histórico** é: na primeira subida, se `~/.cache/meowsystem-clipboard/io.github.meowsystem.Clipboard-db-7.sqlite` ainda não existe, o applet copia o banco antigo (e o `-wal`/`-shm`, se houver) do flatpak ou de `~/.cache/cosmic-ext-applet-clipboard-manager/`. O original fica onde está; nunca se pisa em banco que já existe.
 
 ## Poda do histórico
 

@@ -88,4 +88,11 @@ mod tests {
         assert!(!historico_antigo(&home, ANTIGO, &destino));
         assert_eq!(std::fs::read(&destino).unwrap(), b"atual");
     }
+
+    #[test]
+    fn o_banco_novo_mora_na_pasta_do_binario() {
+        use crate::app::{ORG, PASTA, QUALIFIER};
+        let pastas = directories::ProjectDirs::from(QUALIFIER, ORG, PASTA).unwrap();
+        assert!(pastas.cache_dir().ends_with("meowsystem-clipboard"));
+    }
 }

@@ -41,6 +41,7 @@ pub const QUALIFIER: &str = "io.github";
 pub const ORG: &str = "meowsystem";
 pub const APP: &str = "Clipboard";
 pub const APPID: &str = constcat::concat!(QUALIFIER, ".", ORG, ".", APP);
+pub const PASTA: &str = "meowsystem-clipboard";
 
 pub struct AppState<Db: DbTrait> {
     core: Core,

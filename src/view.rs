@@ -344,22 +344,30 @@ impl<Db: DbTrait> AppState<Db> {
                     } else {
                         button::Catalog::active(theme, focused, focused, &Button::Standard)
                     };
-                    button::Style {
-                        border_radius: rad_s.into(),
-                        outline_width: 0.0,
-                        ..a
-                    }
+                    marcar(
+                        button::Style {
+                            border_radius: rad_s.into(),
+                            outline_width: 0.0,
+                            ..a
+                        },
+                        is_focused,
+                        theme,
+                    )
                 }),
                 hovered: Box::new(move |focused, theme| {
                     let focused = is_focused || focused;
                     let rad_s = theme.cosmic().corner_radii.radius_s;
 
                     let text = button::Catalog::hovered(theme, focused, focused, &Button::Text);
-                    button::Style {
-                        border_radius: rad_s.into(),
-                        outline_width: 0.0,
-                        ..text
-                    }
+                    marcar(
+                        button::Style {
+                            border_radius: rad_s.into(),
+                            outline_width: 0.0,
+                            ..text
+                        },
+                        is_focused,
+                        theme,
+                    )
                 }),
                 disabled: Box::new(|theme| button::Catalog::disabled(theme, &Button::Text)),
                 pressed: Box::new(move |focused, theme| {
@@ -367,11 +375,15 @@ impl<Db: DbTrait> AppState<Db> {
                     let rad_s = theme.cosmic().corner_radii.radius_s;
 
                     let text = button::Catalog::pressed(theme, focused, focused, &Button::Text);
-                    button::Style {
-                        border_radius: rad_s.into(),
-                        outline_width: 0.0,
-                        ..text
-                    }
+                    marcar(
+                        button::Style {
+                            border_radius: rad_s.into(),
+                            outline_width: 0.0,
+                            ..text
+                        },
+                        is_focused,
+                        theme,
+                    )
                 }),
             });
 
@@ -387,7 +399,11 @@ impl<Db: DbTrait> AppState<Db> {
             Stack::new()
                 .push(btn)
                 .push(
-                    container(icon!("star_fill24"))
+                    container(icon!("star_fill24").class(cosmic::theme::Svg::Custom(
+                        std::rc::Rc::new(|theme: &cosmic::Theme| cosmic::iced::widget::svg::Style {
+                            color: Some(theme.cosmic().accent_color().into()),
+                        }),
+                    )))
                         .align_x(Horizontal::Right)
                         .padding(padding::top(3).right(3))
                         .width(Length::Fill),
@@ -420,6 +436,17 @@ impl<Db: DbTrait> AppState<Db> {
             .padding(padding::all(5));
 
         my_widget::context_menu(content, overlay).into()
+    }
+}
+
+fn marcar(style: button::Style, marcado: bool, theme: &cosmic::Theme) -> button::Style {
+    if !marcado {
+        return style;
+    }
+    button::Style {
+        border_width: 1.5,
+        border_color: theme.cosmic().accent_color().into(),
+        ..style
     }
 }
 

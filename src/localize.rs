@@ -44,3 +44,35 @@ pub fn localize() {
         error!("Error while loading language for App List {}", error);
     }
 }
+
+#[cfg(test)]
+mod tests {
+    fn chaves(ftl: &str) -> Vec<&str> {
+        ftl.lines()
+            .filter_map(|linha| linha.split_once('=').map(|(chave, _)| chave.trim()))
+            .filter(|chave| !chave.is_empty() && !chave.starts_with('#'))
+            .collect()
+    }
+
+    #[test]
+    fn pt_br_traz_toda_chave_do_ingles() {
+        let en = chaves(include_str!("../i18n/en/meowsystem_clipboard.ftl"));
+        let pt = chaves(include_str!("../i18n/pt-BR/meowsystem_clipboard.ftl"));
+        let faltam: Vec<_> = en.iter().filter(|chave| !pt.contains(chave)).collect();
+        assert!(faltam.is_empty(), "faltam em pt-BR: {faltam:?}");
+    }
+
+    #[test]
+    fn sobe_em_pt_br_com_lang_pt_br() {
+        unsafe {
+            std::env::set_var("LANG", "pt_BR.UTF-8");
+            for nome in ["LANGUAGE", "LC_ALL", "LC_MESSAGES"] {
+                std::env::remove_var(nome);
+            }
+        }
+        super::localize();
+        assert_eq!(crate::fl!("search_entries"), "Buscar");
+        assert_eq!(crate::fl!("incognito"), "Modo anônimo");
+        assert_eq!(crate::fl!("data_control_missing"), "O compositor não oferece o protocolo de área de transferência (data control)");
+    }
+}

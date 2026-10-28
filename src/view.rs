@@ -249,7 +249,7 @@ impl<Db: DbTrait> AppState<Db> {
     fn error_view(&self, error: &ErrorState) -> Element<'_, AppMsg> {
         match error {
             ErrorState::MissingDataControlProtocol => {
-                text("Error: The data control protocol is not active").into()
+                text(fl!("data_control_missing")).into()
             }
             ErrorState::Other(e) => text(e.to_string()).into(),
         }
